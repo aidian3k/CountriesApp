@@ -2,6 +2,7 @@ import {FC} from "react";
 import {CountryElement} from "./CountryElement";
 
 export const CountryList: FC = () => {
+    
     return (
         <div className={'w-full p-2'}>
             <p className={'font-serif md:text-2xl text-xl text-center font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 mb-2'}>Displaying 5 random countries details from Europe</p>
