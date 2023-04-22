@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  backend:
+    container_name: countries-app-backend
+    build:
+      context: booking-app-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      -
+  frontend:
+    container_name: countries-app-frontend
+    depends_on:
+      - backend
+    build:
+      context: countries-app-backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
