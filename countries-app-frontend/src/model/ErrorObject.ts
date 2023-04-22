@@ -1,4 +1,5 @@
 export interface ErrorObject {
     continentError: boolean,
-    numberError: boolean
+    numberError: boolean,
+    internal: boolean
 }

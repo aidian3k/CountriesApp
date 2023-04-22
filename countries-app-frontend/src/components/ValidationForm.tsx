@@ -3,10 +3,21 @@ import {ErrorElement} from "./ErrorElement";
 import {ErrorObject} from "../model/ErrorObject";
 
 export const ValidationForm: FC = () => {
-    const [errorObject, setErrorObject] = useState<ErrorObject>({numberError: false, continentError: false});
-    const [internalError, setInternalError] = useState<boolean>(false);
+    const [errorObject, setErrorObject] = useState<ErrorObject>({internal: false, numberError: false, continentError: false});
     const [continent, setContinent] = useState<String>('');
     const [number, setNumber] = useState<string>('');
+
+    function isNumeric(value: string) {
+        return /^\d+$/.test(value);
+    }
+
+    function handleSubmit() {
+        if (continent === '') {
+            setErrorObject({internal: true, continentError: true, numberError: true});
+        } else if(number === '' || !isNumeric(number) || Number(number) < 2 || Number(number) > 10) {
+            setErrorObject({internal: true, continentError: false, numberError: true})
+        }
+    }
 
     return (
         <>
@@ -31,15 +42,17 @@ export const ValidationForm: FC = () => {
                         />
                     </div>
 
-                    <button className={'w-full border-1 outline hover:scale-105 transition-all rounded-full bg-red-500 hover:bg-red-700'}>
+                    <button className={'w-full border-1 outline hover:scale-105 transition-all rounded-full bg-red-500 hover:bg-red-700'}
+                        onClick={handleSubmit}
+                    >
                         <p className={'font-serif font-semibold text-xl '}>Show the countries</p>
                     </button>
                 </div>
             </div>
 
-            {internalError
+            {errorObject.internal
                 && <ErrorElement
-                    continentError={errorObject.continentError} numberError={errorObject.numberError}/>}
+                    continentError={errorObject.continentError} numberError={errorObject.numberError} internal={errorObject.internal}/>}
         </>
     )
 }

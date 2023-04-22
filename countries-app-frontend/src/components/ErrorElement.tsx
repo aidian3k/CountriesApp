@@ -6,7 +6,7 @@ export const ErrorElement: FC<ErrorObject> = (props) => {
         if (props.continentError) {
             return 'You should choose the continent from the list!';
         } else if(props.numberError) {
-            return 'You should type in the number between 2 and 10';
+            return 'You should type in the integer between 2 and 10';
         } else {
             return 'You should type in proper number and choose continent!';
         }
