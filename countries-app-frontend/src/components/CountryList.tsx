@@ -1,6 +1,7 @@
 import {FC, useEffect, useState} from "react";
 import {CountryElement} from "./CountryElement";
 import {CountryDetails} from "../model/CountryDetails";
+import {Header} from "./Header";
 
 export const CountryList: FC<any> = (props) => {
     const [data, setData] = useState<CountryDetails[]>([]);
@@ -67,8 +68,8 @@ export const Elements: FC<any> = (props) => {
     return (
         <>
             <div className={'w-full p-2'}>
-                {!props.apiError ? <p className={'font-serif md:text-2xl text-xl text-center font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 mb-2'}>Displaying {props.number} random
-                    countries details from {props.continent}</p> : <p className={'font-serif md:text-2xl text-xl text-center font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 mb-2'}>Error occurred when fetching! Try fetching again!</p>}
+                {!props.apiError ? <Header data={`Displaying ${props.number} random
+                    countries details from ${props.continent}`}/> : <Header data={`Error occurred when fetching! Try fetching again!`}/>}
 
                 <div className="w-full overflow-hidden rounded-lg shadow-md">
                     <div className="w-full overflow-x-auto">
