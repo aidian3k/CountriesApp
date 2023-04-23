@@ -18,7 +18,7 @@ export const MainPage: FC = () => {
                             number={number} setNumber={setNumber}
             />
             <CountryList  errorObject={errorObject} setErrorObject={setErrorObject}
-                          clickedButton={clickedButton}
+                          clickedButton={clickedButton} setClickedButton={setClickedButton}
                           loading={loading} setLoading={setLoading}
                           continent={continent} number={number}
             />

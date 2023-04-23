@@ -1,7 +1,7 @@
 package aidian3k.dev.countriesappbackend.webclient;
 
+import aidian3k.dev.countriesappbackend.exception.CountryNotFoundException;
 import aidian3k.dev.countriesappbackend.model.CountryDetails;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
@@ -35,8 +35,8 @@ public class CountryDetailsWebClient {
             JsonNode jsonResponse = mapper.readTree(jsonText);
 
             return extractCountryDetails(jsonResponse);
-        } catch (JsonProcessingException exception) {
-            throw new IllegalStateException("Json parsing problem!");
+        } catch (Exception exception) {
+            throw new CountryNotFoundException("Json parsing problem!");
         }
     }
 

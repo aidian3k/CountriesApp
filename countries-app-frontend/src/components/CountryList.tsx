@@ -4,6 +4,7 @@ import {CountryDetails} from "../model/CountryDetails";
 
 export const CountryList: FC<any> = (props) => {
     const [data, setData] = useState<CountryDetails[]>([]);
+    const [apiError, setApiError] = useState<boolean>(false);
 
     useEffect(() => {
         if (props.errorObject.internal || props.continent === '') {
@@ -12,21 +13,27 @@ export const CountryList: FC<any> = (props) => {
 
         props.setLoading(true);
 
-        fetch('http://localhost:8080/' + props.continent + '/' + props.number)
-            .then(response => response.json())
-            .then(data => {
-                setData(data);
-                props.setLoading(false);
-            })
-            .catch(error => {
-                props.setLoading(false);
-                setData([]);
-                props.setErrorObject({internal: true, numberError: false, continentError: false})
-            });
+        try {
+            fetch('http://localhost:8080/' + props.continent + '/' + props.number)
+                .then(response => response.json())
+                .then(data => {
+                    setData(data);
+                    props.setLoading(false);
+                    setApiError(false);
+                })
+                .catch(error => {
+                    props.setClickedButton(true);
+                    props.setLoading(false);
+                    setApiError(true);
+                });
+        } catch (error) {
+            console.log('hello'); // log any errors that occur in the fetch method
+        }
     }, [props.clickedButton]);
 
+
     function getElements() {
-        if (data !== undefined && data !== null) {
+        if (Array.isArray(data) && data !== null) {
             return data.map(element => {
                 return (
                     <CountryElement officialName={element.officialName}
@@ -34,7 +41,8 @@ export const CountryList: FC<any> = (props) => {
                                     capitals={element.capitals}
                                     languages={element.languages}
                                     population={element.population}
-                                    currencies={element.currencies}/>
+                                    currencies={element.currencies}
+                    />
                 )
             });
         } else {
@@ -45,7 +53,7 @@ export const CountryList: FC<any> = (props) => {
     const elements: JSX.Element[] = getElements()
 
     return (
-        <Elements elements={elements} continent={props.continent} number={props.number}/>
+        <Elements elements={elements} continent={props.continent} number={props.number} apiError={apiError}/>
     )
 }
 
@@ -57,30 +65,32 @@ export const TableHeading: FC<any> = (props) => {
 
 export const Elements: FC<any> = (props) => {
     return (
-        <div className={'w-full p-2'}>
-            <p className={'font-serif md:text-2xl text-xl text-center font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 mb-2'}>Displaying {props.number} random
-                countries details from {props.continent}</p>
+        <>
+            <div className={'w-full p-2'}>
+                {!props.apiError ? <p className={'font-serif md:text-2xl text-xl text-center font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 mb-2'}>Displaying {props.number} random
+                    countries details from {props.continent}</p> : <p className={'font-serif md:text-2xl text-xl text-center font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 mb-2'}>Error occurred when fetching! Try fetching again!</p>}
 
-            <div className="w-full overflow-hidden rounded-lg shadow-md">
-                <div className="w-full overflow-x-auto">
-                    <table className="w-full">
-                        <thead>
-                        <tr className="text-left font-bold font-serif">
-                            <TableHeading header={'Official name'}/>
-                            <TableHeading header={'Subregion'}/>
-                            <TableHeading header={'Capitals'}/>
-                            <TableHeading header={'Languages'}/>
-                            <TableHeading header={'Population'}/>
-                            <TableHeading header={'Currencies'}/>
-                        </tr>
-                        </thead>
+                <div className="w-full overflow-hidden rounded-lg shadow-md">
+                    <div className="w-full overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                            <tr className="text-left font-bold font-serif">
+                                <TableHeading header={'Official name'}/>
+                                <TableHeading header={'Subregion'}/>
+                                <TableHeading header={'Capitals'}/>
+                                <TableHeading header={'Languages'}/>
+                                <TableHeading header={'Population'}/>
+                                <TableHeading header={'Currencies'}/>
+                            </tr>
+                            </thead>
 
-                        <tbody className="bg-white divide-y divide-gray-200">
-                        {props.elements}
-                        </tbody>
-                    </table>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                            {props.elements}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }

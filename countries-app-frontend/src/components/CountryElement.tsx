@@ -30,7 +30,7 @@ export const CountryElement: FC<CountryDetails> = (props) => {
 
 export const SingleDataElement: FC<any> = (props) => {
     return (
-        <td className="px-6 py-4 whitespace-nowrap font-serif">{props.data}</td>
+        <td className="px-6 py-4 whitespace-nowrap font-serif">{props.data === '' ? 'No information found' : props.data}</td>
     )
 
 }
