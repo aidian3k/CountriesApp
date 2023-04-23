@@ -87,7 +87,7 @@ public class ContinentWebClient {
         Set<Integer> randomNumbers = new HashSet<>(numberOfCountries);
         Random rnd = new Random();
 
-        while(randomNumbers.size() <= numberOfCountries) {
+        while(randomNumbers.size() < numberOfCountries) {
             randomNumbers.add(rnd.nextInt(countryNamesSize));
         }
 
